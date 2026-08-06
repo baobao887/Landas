@@ -1,0 +1,107 @@
+{
+  "_readme": [
+    "HOW TO EDIT: each course needs id, name, description, riasec (all six keys, 0-10),",
+    "subjects (secondary tags, must match tags used in questions.json), and scoringNote.",
+    "Add or remove courses freely - the app reads whatever is in this list.",
+    "Scores are RELATIVE SHAPE, not quality. Cosine similarity ignores overall magnitude,",
+    "so what matters is which dimensions are high compared to the others in the SAME course."
+  ],
+  "courses": [
+    {
+      "id": "bs-civil-engineering",
+      "name": "BS Civil Engineering",
+      "description": "Design, analyze, and supervise the construction of roads, bridges, buildings, and water systems.",
+      "riasec": { "R": 9, "I": 8, "A": 3, "S": 3, "E": 4, "C": 7 },
+      "subjects": ["math", "physics"],
+      "scoringNote": "R and I lead: physical structures built from heavy analysis. C is high because codes, specs, and tolerances are non-negotiable. Low A/S - little design expression or direct people work."
+    },
+    {
+      "id": "bs-computer-science",
+      "name": "BS Computer Science",
+      "description": "Study algorithms, data structures, and software systems, and build programs that solve real problems.",
+      "riasec": { "R": 6, "I": 9, "A": 5, "S": 2, "E": 3, "C": 7 },
+      "subjects": ["math", "tech"],
+      "scoringNote": "I dominates: the work is abstract problem-solving. C is high for precision and structure, R moderate for hands-on building. A moderate - there is real design taste in software. S is lowest."
+    },
+    {
+      "id": "bs-architecture",
+      "name": "BS Architecture",
+      "description": "Design buildings and spaces that balance how they look, how they are used, and how they get built.",
+      "riasec": { "R": 7, "I": 6, "A": 9, "S": 4, "E": 5, "C": 6 },
+      "subjects": ["art", "math", "physics"],
+      "scoringNote": "A leads - this is a design discipline first. R and C follow because drawings must survive contact with structure, budget, and building code. E moderate for client work."
+    },
+    {
+      "id": "bs-nursing",
+      "name": "BS Nursing",
+      "description": "Train in clinical care, assessment, and patient management across hospital and community settings.",
+      "riasec": { "R": 6, "I": 6, "A": 2, "S": 10, "E": 4, "C": 7 },
+      "subjects": ["biology", "people"],
+      "scoringNote": "S is the highest of any course here - the job is people, continuously. C is high for charting and protocol, R and I moderate for hands-on procedures and clinical reasoning."
+    },
+    {
+      "id": "bs-biology",
+      "name": "BS Biology",
+      "description": "Study living systems from cells to ecosystems, with heavy laboratory and field work.",
+      "riasec": { "R": 6, "I": 10, "A": 3, "S": 4, "E": 2, "C": 6 },
+      "subjects": ["biology", "science"],
+      "scoringNote": "Purest I profile in the list - investigation is the entire point. R and C moderate for lab technique and meticulous protocol. E is lowest; this is not a persuasion field."
+    },
+    {
+      "id": "bs-psychology",
+      "name": "BS Psychology",
+      "description": "Study human behavior and mental processes using research methods, assessment, and counseling foundations.",
+      "riasec": { "R": 2, "I": 8, "A": 5, "S": 9, "E": 4, "C": 5 },
+      "subjects": ["biology", "people", "writing"],
+      "scoringNote": "S and I together - it is a people-facing field built on research method and statistics. A moderate for interpretation and writing. R is lowest; almost nothing is physical."
+    },
+    {
+      "id": "bs-accountancy",
+      "name": "BS Accountancy",
+      "description": "Master financial reporting, auditing, and taxation, with strong emphasis on standards and controls.",
+      "riasec": { "R": 2, "I": 5, "A": 1, "S": 3, "E": 6, "C": 10 },
+      "subjects": ["math", "business"],
+      "scoringNote": "Highest C in the list - the work is rules, records, and accuracy. E moderate for advisory and client-facing roles. A is the lowest score anywhere; improvisation is a liability here."
+    },
+    {
+      "id": "bsba-marketing",
+      "name": "BSBA - Marketing Management",
+      "description": "Learn how products find their audience: consumer behavior, branding, campaigns, and sales strategy.",
+      "riasec": { "R": 2, "I": 5, "A": 7, "S": 6, "E": 10, "C": 5 },
+      "subjects": ["business", "people", "writing"],
+      "scoringNote": "E leads - persuasion and initiative drive the field. A high for campaign and brand work, S high because it is fundamentally about reading people. R lowest."
+    },
+    {
+      "id": "ba-communication",
+      "name": "BA Communication",
+      "description": "Study media, journalism, and public communication, and practice producing content across formats.",
+      "riasec": { "R": 3, "I": 6, "A": 9, "S": 7, "E": 7, "C": 4 },
+      "subjects": ["writing", "art", "people"],
+      "scoringNote": "A leads on the production and storytelling side, with S and E close behind since the output is aimed at an audience. I moderate for research and reporting."
+    },
+    {
+      "id": "bfa-multimedia-arts",
+      "name": "BFA Multimedia Arts",
+      "description": "Build a practice in visual design, illustration, animation, and motion across digital media.",
+      "riasec": { "R": 4, "I": 4, "A": 10, "S": 3, "E": 4, "C": 3 },
+      "subjects": ["art", "tech"],
+      "scoringNote": "The most A-dominant course here, with everything else deliberately low. R moderate because the tools are technical and hands-on."
+    },
+    {
+      "id": "bsed-teaching",
+      "name": "Bachelor of Secondary Education",
+      "description": "Prepare to teach a major subject in high school, covering pedagogy, assessment, and classroom practice.",
+      "riasec": { "R": 3, "I": 6, "A": 6, "S": 10, "E": 6, "C": 6 },
+      "subjects": ["people", "writing"],
+      "scoringNote": "S at the ceiling - the work is sustained human contact. A and E moderate-high because explaining well is a performance. I moderate for subject mastery."
+    },
+    {
+      "id": "bs-hospitality-management",
+      "name": "BS Hospitality Management",
+      "description": "Run hotels, restaurants, and events: service operations, food and beverage, and guest experience.",
+      "riasec": { "R": 6, "I": 3, "A": 5, "S": 9, "E": 8, "C": 7 },
+      "subjects": ["people", "business"],
+      "scoringNote": "S and E lead - service plus commercial pressure. C and R follow for operations, standards, and genuinely physical shift work. I is lowest; little research involved."
+    }
+  ]
+}

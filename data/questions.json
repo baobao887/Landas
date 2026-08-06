@@ -1,0 +1,169 @@
+{
+  "_readme": [
+    "HOW TO EDIT: each question needs an id, a prompt, and 3-4 options.",
+    "Each option has a label, a weights object (any subset of R I A S E C, values 1-3),",
+    "and optional subjects tags (secondary layer - must match tags used in courses.json).",
+    "Add or remove questions freely; the app reads whatever is in this list.",
+    "",
+    "TWO RULES WORTH KEEPING:",
+    "1. Keep the framing behavioural ('which would you actually do'), not self-rating.",
+    "2. Give most options a SECOND trait at weight 1. Real interests co-occur, and options",
+    "   that load on a single trait produce spiky profiles that match nothing well.",
+    "   Common pairings: R+I, R+C, A+I, A+E, S+E, E+C, I+C.",
+    "",
+    "You do NOT need to balance how many questions offer each trait - the app normalises",
+    "each trait by its maximum attainable score before matching."
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "It's a free Saturday and nobody needs anything from you. What actually sounds good?",
+      "options": [
+        { "label": "Fixing up something around the house, or taking apart the thing that broke", "weights": { "R": 3, "I": 1 } },
+        { "label": "Falling down a rabbit hole about how something works", "weights": { "I": 3, "A": 1 }, "subjects": ["science"] },
+        { "label": "Drawing, editing a video, or writing something for no reason", "weights": { "A": 3, "I": 1 }, "subjects": ["art", "writing"] },
+        { "label": "Being there for a friend who's having a rough week", "weights": { "S": 3, "E": 1 }, "subjects": ["people"] }
+      ]
+    },
+    {
+      "id": "q2",
+      "prompt": "A group project just got assigned. Without discussing it, you drift toward...",
+      "options": [
+        { "label": "Building the actual thing", "weights": { "R": 3, "I": 1 } },
+        { "label": "The research and the numbers", "weights": { "I": 3, "C": 1 }, "subjects": ["math"] },
+        { "label": "How it looks and how it's presented", "weights": { "A": 3, "E": 1 }, "subjects": ["art"] },
+        { "label": "The timeline, and making sure everyone actually delivers", "weights": { "E": 2, "C": 2 } }
+      ]
+    },
+    {
+      "id": "q3",
+      "prompt": "A documentary is starting. Which one do you not switch away from?",
+      "options": [
+        { "label": "Inside an emergency room during one full shift", "weights": { "S": 2, "I": 2 }, "subjects": ["biology", "people"] },
+        { "label": "How a computer chip is actually manufactured", "weights": { "R": 2, "I": 2 }, "subjects": ["tech", "physics"] },
+        { "label": "A year in the life of an artist finishing one work", "weights": { "A": 3, "I": 1 }, "subjects": ["art"] },
+        { "label": "How a tiny company grew into a serious business", "weights": { "E": 3, "I": 1 }, "subjects": ["business"] }
+      ]
+    },
+    {
+      "id": "q4",
+      "prompt": "You have to take a summer job. Which one would you mind the least?",
+      "options": [
+        { "label": "Hardware store - stock, tools, helping people find the right part", "weights": { "R": 3, "C": 1 } },
+        { "label": "Lab assistant - running samples, logging results", "weights": { "I": 3, "C": 1 }, "subjects": ["science", "biology"] },
+        { "label": "Hotel front desk - guests, all day, every day", "weights": { "S": 2, "E": 2 }, "subjects": ["people"] },
+        { "label": "Office records - quiet, predictable, everything filed correctly", "weights": { "C": 3, "R": 1 } }
+      ]
+    },
+    {
+      "id": "q5",
+      "prompt": "Four friends ask for help on the same day. Which one do you say yes to first?",
+      "options": [
+        { "label": "\"My laptop won't turn on.\"", "weights": { "R": 2, "I": 2 }, "subjects": ["tech"] },
+        { "label": "\"Can you explain this lesson? I'm completely lost.\"", "weights": { "S": 3, "I": 1 }, "subjects": ["people"] },
+        { "label": "\"Can you make a poster for my event?\"", "weights": { "A": 3, "S": 1 }, "subjects": ["art"] },
+        { "label": "\"Can you help me pitch this to a sponsor?\"", "weights": { "E": 3, "A": 1 }, "subjects": ["business"] }
+      ]
+    },
+    {
+      "id": "q6",
+      "prompt": "Which of these bothers you more than it probably should?",
+      "options": [
+        { "label": "A tool or machine left broken when it's clearly fixable", "weights": { "R": 3, "C": 1 } },
+        { "label": "A confident argument built on bad data", "weights": { "I": 3, "C": 1 }, "subjects": ["math"] },
+        { "label": "Something ugly that didn't need to be ugly", "weights": { "A": 3, "C": 1 }, "subjects": ["art"] },
+        { "label": "A system where nobody knows who's responsible for what", "weights": { "C": 3, "E": 1 } }
+      ]
+    },
+    {
+      "id": "q7",
+      "prompt": "You have to speak in front of 200 people next month. Honest reaction?",
+      "options": [
+        { "label": "Absolutely not. Give me something to build instead.", "weights": { "R": 3, "C": 1 } },
+        { "label": "Fine, if I'm presenting something I actually researched", "weights": { "I": 3, "C": 1 }, "subjects": ["science"] },
+        { "label": "Fine, if I can make it interesting to watch", "weights": { "A": 3, "E": 1 }, "subjects": ["art"] },
+        { "label": "Genuinely looking forward to it", "weights": { "E": 3, "S": 1 }, "subjects": ["people"] }
+      ]
+    },
+    {
+      "id": "q8",
+      "prompt": "Attendance isn't checked. Which class do you still show up to?",
+      "options": [
+        { "label": "The lab or workshop with the actual equipment", "weights": { "R": 3, "I": 1 }, "subjects": ["physics"] },
+        { "label": "Advanced math or statistics", "weights": { "I": 3, "C": 2 }, "subjects": ["math"] },
+        { "label": "Creative writing or studio art", "weights": { "A": 3, "I": 1 }, "subjects": ["writing", "art"] },
+        { "label": "Debate, psychology, or anything about why people do what they do", "weights": { "S": 3, "I": 1 }, "subjects": ["people"] }
+      ]
+    },
+    {
+      "id": "q9",
+      "prompt": "Someone hands you 10,000 pesos and one free month. What happens to it?",
+      "options": [
+        { "label": "Tools and parts. I'm building something.", "weights": { "R": 3, "A": 1 } },
+        { "label": "Books and courses. I'm going deep on one topic.", "weights": { "I": 3, "A": 1 }, "subjects": ["science"] },
+        { "label": "Funding a short film, a zine, or a set of songs", "weights": { "A": 3, "E": 1 }, "subjects": ["art"] },
+        { "label": "Buying inventory and trying to turn it into 30,000", "weights": { "E": 3, "C": 1 }, "subjects": ["business"] }
+      ]
+    },
+    {
+      "id": "q10",
+      "prompt": "Which compliment would actually land?",
+      "options": [
+        { "label": "\"You can fix anything.\"", "weights": { "R": 3, "I": 1 } },
+        { "label": "\"You always figure out why.\"", "weights": { "I": 3, "R": 1 } },
+        { "label": "\"Nobody else would have thought of that.\"", "weights": { "A": 3, "I": 1 }, "subjects": ["art"] },
+        { "label": "\"People trust you with things that matter.\"", "weights": { "S": 3, "E": 1 }, "subjects": ["people"] }
+      ]
+    },
+    {
+      "id": "q11",
+      "prompt": "Pick where you'd rather spend most of your working hours.",
+      "options": [
+        { "label": "A workshop, a site, or outdoors", "weights": { "R": 3, "C": 1 } },
+        { "label": "A lab, or a quiet desk with one hard problem on it", "weights": { "I": 3, "C": 1 }, "subjects": ["science"] },
+        { "label": "A studio with your materials everywhere", "weights": { "A": 3, "R": 1 }, "subjects": ["art"] },
+        { "label": "An organized office where everything has a place", "weights": { "C": 3, "S": 1 } }
+      ]
+    },
+    {
+      "id": "q12",
+      "prompt": "Five people, no assigned leader, one deadline. What do you end up doing?",
+      "options": [
+        { "label": "Quietly doing the hands-on work", "weights": { "R": 3, "C": 1 } },
+        { "label": "Checking whether what we're claiming is actually true", "weights": { "I": 3, "C": 2 } },
+        { "label": "Keeping the mood up and making sure nobody gets left out", "weights": { "S": 3, "A": 1 }, "subjects": ["people"] },
+        { "label": "Making the calls and pushing the pace", "weights": { "E": 3, "C": 1 }, "subjects": ["business"] }
+      ]
+    },
+    {
+      "id": "q13",
+      "prompt": "Three hours, one task, no interruptions. Which do you pick?",
+      "options": [
+        { "label": "Assembling, wiring, or repairing something", "weights": { "R": 3, "C": 1 }, "subjects": ["tech"] },
+        { "label": "Cleaning up a messy dataset until it makes sense", "weights": { "I": 3, "C": 2 }, "subjects": ["math"] },
+        { "label": "Editing a video until it finally feels right", "weights": { "A": 3, "C": 1 }, "subjects": ["art"] },
+        { "label": "Reconciling records until the numbers balance", "weights": { "C": 3, "I": 1 }, "subjects": ["math", "business"] }
+      ]
+    },
+    {
+      "id": "q14",
+      "prompt": "Which problem would you rather be handed?",
+      "options": [
+        { "label": "\"This machine keeps failing and we don't know why.\"", "weights": { "R": 3, "I": 2 }, "subjects": ["physics", "tech"] },
+        { "label": "\"This community has a health problem nobody's addressed.\"", "weights": { "S": 3, "I": 2 }, "subjects": ["biology", "people"] },
+        { "label": "\"This brand is invisible and we need people to care.\"", "weights": { "E": 3, "A": 2 }, "subjects": ["business", "writing"] },
+        { "label": "\"These records are a mess and an audit is coming.\"", "weights": { "C": 3, "E": 1 }, "subjects": ["business"] }
+      ]
+    },
+    {
+      "id": "q15",
+      "prompt": "Ten years from now, which version of you feels most like the right one?",
+      "options": [
+        { "label": "On site, hands dirty, pointing at something real that got built", "weights": { "R": 3, "E": 1 } },
+        { "label": "The person who knows this subject cold and is asked when it's hard", "weights": { "I": 3, "S": 1 }, "subjects": ["science"] },
+        { "label": "Making things that make people feel something", "weights": { "A": 3, "S": 1 }, "subjects": ["art"] },
+        { "label": "In a room where the people you taught or led are doing well", "weights": { "S": 3, "E": 2 }, "subjects": ["people"] }
+      ]
+    }
+  ]
+}

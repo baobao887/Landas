@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CourseCompass — Find the course that fits how you think</title>
+  <meta name="description" content="Answer 15 quick questions about what you enjoy. We match your interests to real degree programs using the RIASEC framework, and show you exactly why each one fits." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="theme-modernist">
+
+<!-- Theme switcher is injected into every .topbar by app.js. It is not part of
+     the original mockup — the design file ships two complete token sets, so
+     this exposes both. -->
+
+<!-- ============================ LANDING ============================ -->
+<section id="screen-landing" class="screen">
+  <div class="topbar">
+    <div class="wordmark">CourseCompass</div>
+    <nav class="topnav">
+      <a class="nav-a" href="#" aria-current="page">Take the quiz</a>
+      <a class="nav-a" href="#how-it-works">How it works</a>
+      <a class="nav-a" href="#dimensions">The six dimensions</a>
+    </nav>
+    <button class="btn btn-primary js-start" type="button">Start the quiz</button>
+  </div>
+
+  <div class="hero">
+    <div class="hero-main">
+      <div class="eyebrow">Career guidance, explained</div>
+      <h1>Find the course that actually fits how you think.</h1>
+      <p class="hero-lede">
+        Answer 15 quick questions about what you enjoy. We match your interests to real
+        degree programs using the RIASEC framework, and show you exactly why each one fits.
+      </p>
+      <div class="hero-actions">
+        <button class="btn btn-primary js-start" type="button">
+          Start the quiz — 3 minutes
+          <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+        <a class="btn btn-secondary" href="#how-it-works">See how matching works</a>
+      </div>
+    </div>
+
+    <div class="hero-side" id="how-it-works">
+      <div class="side-label">How it works</div>
+      <div class="step"><div class="step-n">01</div><div><div class="step-h">Answer 15 questions</div><div class="step-p">Pick which of the options you'd actually choose. No rating yourself 1–5.</div></div></div>
+      <div class="step"><div class="step-n">02</div><div><div class="step-h">We score your RIASEC profile</div><div class="step-p">Each answer adds to one or more of six interest dimensions.</div></div></div>
+      <div class="step"><div class="step-n">03</div><div><div class="step-h">We rank courses by similarity</div><div class="step-p">Cosine similarity compares your profile to each course profile.</div></div></div>
+    </div>
+  </div>
+
+  <div class="dims-section" id="dimensions">
+    <h3>The six RIASEC dimensions</h3>
+    <p class="section-sub">Every question you answer contributes to one or more of these.</p>
+    <div class="dims" id="dims-grid"><!-- built by app.js from TRAIT_INFO --></div>
+  </div>
+
+  <div class="cta-band">
+    <h2>Ready to find your fit? Start the quiz — it takes about 3 minutes.</h2>
+    <button class="btn btn-cta js-start" type="button">Start the quiz</button>
+  </div>
+
+  <footer class="foot">
+    <p>Your answers never leave your browser. Courses and questions live in
+      <code>data/courses.json</code> and <code>data/questions.json</code>.</p>
+    <p id="load-error" class="error" hidden></p>
+  </footer>
+</section>
+
+<!-- ============================= QUIZ ============================== -->
+<section id="screen-quiz" class="screen" hidden>
+  <div class="topbar">
+    <div class="wordmark">CourseCompass</div>
+    <div class="topbar-meta">Question <span id="q-current">1</span> of <span id="q-total">15</span></div>
+  </div>
+  <div class="bar-track bar-flush"><div class="bar-fill" id="progress-fill" style="width:0%"></div></div>
+
+  <div class="quiz-body">
+    <div class="eyebrow">Which would you actually choose?</div>
+    <h1 id="q-prompt"></h1>
+    <div id="q-options" class="options" role="group" aria-labelledby="q-prompt"></div>
+    <div class="quiz-nav">
+      <button id="btn-back" class="btn btn-secondary" type="button">Back</button>
+      <p class="hint">Press 1–4 to answer with the keyboard.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ RESULTS ============================ -->
+<section id="screen-results" class="screen" hidden>
+  <div class="topbar">
+    <div class="wordmark">CourseCompass</div>
+    <button class="btn btn-secondary js-restart" type="button" style="margin-left:auto;">Retake quiz</button>
+  </div>
+
+  <div class="results-grid">
+    <aside class="profile-col">
+      <h3>Your RIASEC profile</h3>
+      <p class="section-sub">Higher bars mean stronger interest.</p>
+      <div id="profile-bars" class="profile-bars"></div>
+    </aside>
+
+    <div class="matches-col">
+      <h2>Your matches</h2>
+      <p class="section-sub">Ranked by cosine similarity to your profile.</p>
+      <div id="results-list" class="matches"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= COURSE DETAIL ========================= -->
+<section id="screen-detail" class="screen" hidden>
+  <div class="topbar">
+    <div class="wordmark">CourseCompass</div>
+    <button class="nav-a js-back-to-matches" type="button" style="margin-left:auto;background:none;border:0;cursor:pointer;font:inherit;">← Back to matches</button>
+  </div>
+
+  <div class="detail-grid">
+    <div class="detail-main">
+      <div class="detail-head">
+        <h1 id="detail-name"></h1>
+        <span class="tag tag-accent" id="detail-tag"></span>
+      </div>
+      <div class="detail-pct" id="detail-pct"></div>
+      <p class="detail-summary" id="detail-summary"></p>
+
+      <h3 class="detail-why">Why this matches</h3>
+      <div id="detail-reasons" class="reason-list"></div>
+
+      <div class="detail-note">
+        <strong>How this course is scored.</strong>
+        <span id="detail-scoring-note"></span>
+      </div>
+    </div>
+
+    <aside class="compare-col">
+      <h3 class="compare-h">You vs. this course</h3>
+      <div id="compare-bars" class="compare-bars"></div>
+      <div class="legend">
+        <div class="legend-item"><span class="swatch swatch-you"></span>You</div>
+        <div class="legend-item"><span class="swatch swatch-course"></span>Course</div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<script src="app.js"></script>
+</body>
+</html>

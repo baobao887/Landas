@@ -1,0 +1,486 @@
+/* ==========================================================================
+   CourseCompass — design system
+   Ported from "CourseCompass Mockups.dc.html" (Claude Design project
+   0bbe11a1-be75-4cf4-9c46-7457be70473d).
+
+   Two complete themes ship side by side. Everything below the THEMES block
+   is written against tokens only, so adding a third theme means adding one
+   more .theme-* block — no component rules need to change.
+
+   The two themes differ structurally as well as chromatically:
+     Modernist — flat, zero radius, hard 2px rules, no card fills, roomy.
+     Nocturne  — dark, soft radii, surface-filled cards, outlined buttons, compact.
+   Those differences live in the few `.theme-* .component` overrides marked
+   THEME-STRUCTURAL further down.
+   ========================================================================== */
+
+/* ============================== THEMES ================================== */
+
+.theme-modernist {
+  --color-bg: #f3f2f2;
+  --color-surface: #eae9e9;
+  --color-text: #201e1d;
+  --color-accent: #ec3013;
+  --color-accent-2: #e15b47;
+  --color-divider: color-mix(in srgb, #201e1d 40%, transparent);
+
+  --color-neutral-100: #f8f4f4; --color-neutral-200: #eae7e7; --color-neutral-300: #d7d3d3;
+  --color-neutral-400: #bab6b6; --color-neutral-500: #9b9797; --color-neutral-600: #7d7979;
+  --color-neutral-700: #605d5d; --color-neutral-800: #444141; --color-neutral-900: #2d2b2b;
+
+  --color-accent-100: #fff2ef; --color-accent-200: #ffe0d9; --color-accent-300: #ffc4b8;
+  --color-accent-400: #ff9783; --color-accent-500: #ff563c; --color-accent-600: #dd2b0f;
+  --color-accent-700: #ae1800; --color-accent-800: #7c1405; --color-accent-900: #4d170e;
+
+  --color-band: var(--color-accent);
+  --color-band-text: var(--color-bg);
+  --color-course-bar: var(--color-neutral-700);
+  --color-course-track: var(--color-neutral-300);
+
+  --font-heading: "Archivo", system-ui, sans-serif;
+  --font-heading-weight: 800;
+  --font-body: "Archivo", system-ui, sans-serif;
+
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-6: 24px; --space-8: 32px;
+  --radius-sm: 0px; --radius-md: 0px; --radius-lg: 0px;
+
+  --shadow-sm: 0 1px 2px color-mix(in srgb, #2d2b2b 14%, transparent);
+  --shadow-md: 0 3px 10px color-mix(in srgb, #2d2b2b 16%, transparent);
+  --shadow-lg: 0 12px 32px color-mix(in srgb, #2d2b2b 22%, transparent);
+
+  /* layout rhythm — Modernist is the roomier of the two */
+  --rule: 2px;
+  --pad-x: 48px;
+  --pad-header-y: 20px;
+  --pad-section-y: 40px;
+  --pad-hero-y: 64px;
+  --nav-gap: 28px;
+}
+
+.theme-nocturne {
+  --color-bg: #161826;
+  --color-surface: #232532;
+  --color-text: #e9e9ed;
+  --color-accent: #9184d9;
+  --color-accent-2: #a7a1db;
+  --color-divider: color-mix(in srgb, #e9e9ed 16%, transparent);
+
+  --color-neutral-100: #f3f5fe; --color-neutral-200: #e4e7f5; --color-neutral-300: #cfd3e5;
+  --color-neutral-400: #b2b6ca; --color-neutral-500: #9397ab; --color-neutral-600: #75798c;
+  --color-neutral-700: #595d6c; --color-neutral-800: #3f424d; --color-neutral-900: #292b31;
+
+  --color-accent-100: #f5f4ff; --color-accent-200: #e7e5fe; --color-accent-300: #d2cefd;
+  --color-accent-400: #b5abfc; --color-accent-500: #968ae0; --color-accent-600: #796cbf;
+  --color-accent-700: #5d5294; --color-accent-800: #423a6a; --color-accent-900: #2b2741;
+
+  --color-section: #262a60; --color-section-glow: #353b80;
+  --color-band: var(--color-section);
+  --color-band-text: #f2f1fb;
+  --color-course-bar: var(--color-neutral-400);
+  --color-course-track: var(--color-neutral-700);
+
+  --font-heading: "Inter", system-ui, sans-serif;
+  --font-heading-weight: 500;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  --space-1: 2.8px; --space-2: 5.6px; --space-3: 8.4px; --space-4: 11.2px;
+  --space-6: 16.8px; --space-8: 22.4px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 14px;
+
+  --shadow-sm: 0 0 0 1px #3f424d;
+  --shadow-md: 0 0 0 1px #595d6c, 0 6px 18px rgba(0,0,0,0.55);
+  --shadow-lg: 0 0 0 1px #9397ab, 0 16px 40px rgba(0,0,0,0.65);
+
+  /* layout rhythm — Nocturne is deliberately tighter */
+  --rule: 1px;
+  --pad-x: 40px;
+  --pad-header-y: 16px;
+  --pad-section-y: 32px;
+  --pad-hero-y: 56px;
+  --nav-gap: 22px;
+}
+
+/* ============================== BASE ==================================== */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  transition: background .2s, color .2s;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: var(--font-heading-weight);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+h1 { font-size: clamp(30px, 4.4vw, 42px); }
+h2 { font-size: clamp(24px, 3.2vw, 30px); }
+h3 { font-size: 22px; }
+p { margin: 0; }
+
+a { color: var(--color-accent); text-underline-offset: 3px; }
+a:hover { color: var(--color-accent-2); }
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+/* The mockup is authored as a 1440px frame. Matching that cap keeps the
+   flush-left grid and the CTA band in proportion on wider monitors instead of
+   letting the hero stretch to 2000px+. */
+.screen { max-width: 1440px; margin: 0 auto; }
+.screen[hidden] { display: none; }
+
+.eyebrow {
+  font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--color-accent); margin-bottom: var(--space-4);
+}
+.section-sub { font-size: 13px; opacity: 0.7; }
+.icon { display: block; }
+
+/* ============================ COMPONENTS ================================ */
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  cursor: pointer; text-decoration: none;
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 14px;
+  padding: var(--space-2) calc(var(--space-3) * 1.4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  transition: background .15s, color .15s, border-color .15s;
+}
+.btn-secondary { border-color: var(--color-divider); color: var(--color-text); background: transparent; }
+.btn-secondary:hover { border-color: var(--color-accent); color: var(--color-accent); }
+.btn-ghost { color: var(--color-accent); background: none; border: 0; padding-inline: var(--space-1); cursor: pointer; font-family: var(--font-heading); font-size: 12px; }
+.btn-ghost:hover { color: var(--color-accent-2); }
+.btn[disabled] { opacity: 0.35; cursor: default; }
+.btn[disabled]:hover { border-color: var(--color-divider); color: var(--color-text); }
+
+/* THEME-STRUCTURAL: Modernist fills its primary button, Nocturne outlines it. */
+.theme-modernist .btn-primary { background: var(--color-accent); color: var(--color-bg); }
+.theme-modernist .btn-primary:hover { background: var(--color-accent-600); }
+.theme-nocturne .btn-primary { color: var(--color-accent); border-color: var(--color-accent); background: transparent; }
+.theme-nocturne .btn-primary:hover { background: var(--color-accent-900); }
+
+.tag {
+  display: inline-flex; align-items: center; white-space: nowrap;
+  font-size: 11px; letter-spacing: 0.02em; padding: 3px 10px;
+  border-radius: calc(var(--radius-md) * 0.75); font-weight: 600;
+  font-family: var(--font-body);
+}
+.tag-accent { background: var(--color-accent-100); color: var(--color-accent-800); }
+
+.nav-a { color: inherit; text-decoration: none; font-size: 14px; }
+.nav-a:hover { color: var(--color-accent); }
+
+.bar-track { height: 8px; background: var(--color-neutral-200); border-radius: var(--radius-sm); overflow: hidden; }
+.theme-nocturne .bar-track { background: var(--color-neutral-800); }
+.bar-fill { height: 100%; background: var(--color-accent); transition: width .3s ease; }
+.bar-flush { border-radius: 0; }
+
+.seg { display: inline-flex; overflow: hidden; border: 1px solid var(--color-divider); border-radius: var(--radius-md); }
+.seg-opt {
+  padding: 10px 16px; font-size: 13px; cursor: pointer;
+  background: transparent; border: 0; color: inherit; font-family: inherit;
+}
+.seg-opt + .seg-opt { border-left: 1px solid var(--color-divider); }
+.theme-modernist .seg-opt.active { background: var(--color-accent); color: var(--color-bg); }
+.theme-nocturne  .seg-opt.active { color: var(--color-accent); box-shadow: inset 0 0 0 1px var(--color-accent); }
+
+.theme-switch { flex: none; margin-left: var(--space-3); }
+.theme-switch .seg-opt { padding: 6px 12px; font-size: 12px; }
+/* On the quiz/results/detail bars the preceding element already claims the
+   auto margin, so this just trails it; on landing it follows the CTA button. */
+
+/* ============================== TOPBAR ================================== */
+
+.topbar {
+  display: flex; align-items: center; gap: var(--space-8);
+  padding: var(--pad-header-y) var(--pad-x);
+}
+/* THEME-STRUCTURAL: Modernist separates bands with hard rules; Nocturne doesn't. */
+.theme-modernist .topbar { border-bottom: var(--rule) solid var(--color-divider); }
+
+.wordmark {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 18px; letter-spacing: -0.01em; color: var(--color-text);
+}
+.theme-nocturne .wordmark { font-size: 16px; }
+.topnav { display: flex; gap: var(--nav-gap); margin-right: auto; flex-wrap: wrap; }
+.topbar-meta { margin-left: auto; font-size: 13px; opacity: 0.7; }
+
+/* =============================== HERO =================================== */
+
+.hero { display: grid; grid-template-columns: 1fr 1fr; }
+.theme-modernist .hero { border-bottom: var(--rule) solid var(--color-divider); }
+.theme-nocturne  .hero { grid-template-columns: 3fr 2fr; padding: var(--pad-hero-y) var(--pad-x) var(--pad-section-y); }
+
+.hero-main { padding: var(--pad-hero-y) var(--pad-x); }
+.theme-modernist .hero-main { border-right: var(--rule) solid var(--color-divider); }
+.theme-nocturne  .hero-main { padding: 0 var(--pad-section-y) 0 0; }
+
+.hero-lede { max-width: 46ch; font-size: 16px; opacity: 0.82; margin: 20px 0 28px; }
+.theme-nocturne .hero-lede { font-size: 15px; opacity: 0.75; margin: 16px 0 24px; }
+.hero-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+
+.hero-side {
+  padding: var(--pad-hero-y) var(--pad-x);
+  display: flex; flex-direction: column; justify-content: center; gap: var(--space-4);
+}
+.theme-nocturne .hero-side { padding: 0; gap: var(--space-4); }
+
+.side-label {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6;
+}
+.step { display: flex; gap: var(--space-4); }
+.step-n {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 22px; color: var(--color-accent); width: 32px; flex: none;
+}
+.theme-nocturne .step-n { font-size: 18px; width: 22px; }
+.step-h { font-weight: var(--font-heading-weight); font-family: var(--font-heading); margin-bottom: 4px; }
+.theme-nocturne .step-h { font-weight: 600; font-size: 13px; }
+.step-p { font-size: 13px; opacity: 0.75; }
+.theme-nocturne .step-p { font-size: 12px; opacity: 0.65; }
+
+/* ========================== RIASEC DIMENSIONS =========================== */
+
+.dims-section { padding: var(--pad-section-y) var(--pad-x); }
+.dims-section h3 { margin-bottom: 6px; }
+.dims-section .section-sub { margin-bottom: var(--space-6); }
+
+/* THEME-STRUCTURAL: Modernist = 6-column modular grid divided by rules.
+   Nocturne = wrapping row of filled cards. */
+.theme-modernist .dims { display: grid; grid-template-columns: repeat(6, 1fr); }
+.theme-modernist .dim { padding: 0 16px; border-right: var(--rule) solid var(--color-divider); }
+.theme-modernist .dim:first-child { padding-left: 0; }
+.theme-modernist .dim:last-child { padding-right: 0; border-right: 0; }
+
+.theme-nocturne .dims { display: flex; flex-wrap: wrap; gap: var(--space-4); }
+.theme-nocturne .dim {
+  width: 200px; background: var(--color-surface); border-radius: var(--radius-md);
+  padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2);
+}
+
+.dim-badge {
+  width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  background: var(--color-accent-100); color: var(--color-accent-800);
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  margin-bottom: 12px; border-radius: var(--radius-sm); flex: none;
+}
+.theme-nocturne .dim-badge {
+  width: 30px; height: 30px; font-size: 13px; font-weight: 600; margin-bottom: 0;
+  background: var(--color-accent-800); color: var(--color-accent-100);
+}
+.dim-name { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 14px; margin-bottom: 4px; }
+.theme-nocturne .dim-name { font-weight: 600; font-size: 13px; margin-bottom: 0; }
+.dim-desc { font-size: 12px; opacity: 0.7; }
+.theme-nocturne .dim-desc { font-size: 11px; opacity: 0.65; }
+
+/* ============================= CTA BAND ================================= */
+
+.cta-band {
+  background: var(--color-band); color: var(--color-band-text);
+  padding: 48px var(--pad-x);
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-6);
+  flex-wrap: wrap;
+}
+.theme-nocturne .cta-band {
+  padding: 44px var(--pad-x);
+  background-image: radial-gradient(circle at 15% 30%, var(--color-section-glow), transparent 60%);
+}
+.cta-band h2 { max-width: 520px; }
+.btn-cta { flex: none; }
+.theme-modernist .btn-cta { background: var(--color-bg); color: var(--color-accent-700); }
+.theme-nocturne  .btn-cta { color: var(--color-accent); border-color: var(--color-accent); background: transparent; }
+.theme-nocturne  .btn-cta:hover { background: var(--color-accent-900); }
+
+/* ================================ QUIZ ================================== */
+
+.quiz-body { max-width: 680px; margin: 0 auto; padding: 72px var(--pad-x); }
+.theme-nocturne .quiz-body { max-width: 640px; margin: 0; padding: 64px var(--pad-x); }
+/* The mockup's sample question is one short line at 42px. Real prompts here run
+   two to four lines, where 42px swamps the options — hence the smaller ceiling. */
+.quiz-body h1 { font-size: clamp(24px, 3.2vw, 34px); margin-bottom: 40px; }
+
+.options { display: flex; flex-direction: column; gap: var(--space-2); }
+.option {
+  display: flex; align-items: flex-start; gap: 14px;
+  width: 100%; text-align: left; cursor: pointer;
+  font: inherit; color: var(--color-text);
+  padding: var(--space-4);
+  border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+  background: transparent;
+  transition: border-color .12s, background .12s;
+}
+/* THEME-STRUCTURAL: Modernist keeps options flat and unfilled with a hard
+   border; Nocturne fills them like the cards used elsewhere in that theme. */
+.theme-modernist .option { border-width: var(--rule); }
+.theme-modernist .option:hover { border-color: var(--color-accent); background: var(--color-accent-100); }
+.theme-nocturne  .option { background: var(--color-surface); border-color: transparent; }
+.theme-nocturne  .option:hover { border-color: var(--color-accent); background: var(--color-accent-900); }
+
+.option-key {
+  flex: none; width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 12px;
+  background: var(--color-accent-100); color: var(--color-accent-800);
+  border-radius: var(--radius-sm);
+}
+.theme-nocturne .option-key { background: var(--color-accent-800); color: var(--color-accent-100); font-weight: 600; }
+
+.quiz-nav { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: 40px; }
+.hint { font-size: 13px; opacity: 0.6; text-align: right; }
+
+/* ============================== RESULTS ================================= */
+
+/* min-height keeps the Modernist column rule running down the page instead of
+   stopping under the shorter column and looking like a rendering artefact. */
+.results-grid { display: grid; grid-template-columns: 340px 1fr; min-height: 72vh; }
+.theme-nocturne .results-grid { grid-template-columns: 300px 1fr; padding: var(--pad-section-y) var(--pad-x); gap: var(--pad-section-y); }
+
+.profile-col { padding: var(--pad-section-y) var(--space-8); }
+.theme-modernist .profile-col { border-right: var(--rule) solid var(--color-divider); }
+.theme-nocturne  .profile-col { padding: 0; }
+.matches-col { padding: var(--pad-section-y) var(--pad-x); }
+.theme-nocturne .matches-col { padding: 0; }
+
+.profile-col h3, .matches-col h2 { margin-bottom: 6px; }
+.profile-col .section-sub, .matches-col .section-sub { margin-bottom: var(--space-6); }
+
+.profile-bars { display: flex; flex-direction: column; gap: var(--space-4); }
+.prow-head { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; }
+.prow-val { font-family: var(--font-heading); font-weight: var(--font-heading-weight); }
+
+.matches { display: flex; flex-direction: column; }
+.theme-nocturne .matches { gap: var(--space-3); }
+
+.match {
+  display: flex; gap: 20px; align-items: flex-start;
+  padding: 20px 0; width: 100%; text-align: left;
+  background: none; border: 0; color: inherit; font: inherit; cursor: pointer;
+}
+/* THEME-STRUCTURAL: Modernist separates rows with rules; Nocturne uses cards. */
+.theme-modernist .match { border-bottom: var(--rule) solid var(--color-divider); }
+.theme-modernist .match:last-child { border-bottom: 0; }
+.theme-modernist .match:hover { background: var(--color-accent-100); }
+.theme-nocturne .match {
+  background: var(--color-surface); border-radius: var(--radius-md);
+  padding: var(--space-4); gap: 18px;
+}
+.theme-nocturne .match:hover { box-shadow: inset 0 0 0 1px var(--color-accent); }
+
+.match-rank {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 28px; color: var(--color-accent); width: 40px; flex: none;
+}
+.theme-nocturne .match-rank { font-size: 22px; width: 32px; }
+.match-body { flex: 1; min-width: 0; }
+.match-title { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+.match-title h3 { margin: 0; }
+.theme-nocturne .match-title h3 { font-size: 17px; }
+.match-reason { font-size: 13px; opacity: 0.8; }
+.theme-nocturne .match-reason { font-size: 12px; opacity: 0.7; }
+.match-side { text-align: right; flex: none; }
+.match-pct { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 24px; }
+.theme-nocturne .match-pct { font-size: 20px; color: var(--color-text); }
+.match-link { font-size: 12px; color: var(--color-accent); margin-top: 4px; display: block; }
+
+/* ============================ COURSE DETAIL ============================= */
+
+.detail-grid { padding: var(--pad-section-y) var(--pad-x) 48px; display: grid; grid-template-columns: 1fr 260px; gap: 48px; }
+.theme-nocturne .detail-grid { grid-template-columns: 1fr 240px; gap: 40px; }
+
+.detail-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+.detail-head h1 { margin: 0; }
+.detail-pct {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 22px; color: var(--color-accent); margin-bottom: 28px;
+}
+.theme-nocturne .detail-pct { font-size: 18px; margin-bottom: 22px; }
+.detail-summary { font-size: 15px; opacity: 0.85; max-width: 60ch; margin-bottom: 32px; }
+.theme-nocturne .detail-summary { font-size: 14px; opacity: 0.75; margin-bottom: 26px; }
+.detail-why { margin-bottom: 16px; }
+
+.reason-list { display: flex; flex-direction: column; gap: 14px; max-width: 60ch; }
+.reason { display: flex; gap: 12px; }
+.reason svg { flex: none; margin-top: 3px; color: var(--color-accent); }
+.reason-caveat svg { color: var(--color-neutral-500); }
+.reason p { font-size: 13px; opacity: 0.85; }
+.theme-nocturne .reason p { font-size: 12px; opacity: 0.75; }
+
+.detail-note {
+  margin-top: 32px; max-width: 60ch; font-size: 12px; opacity: 0.7;
+  padding: var(--space-4); background: var(--color-surface); border-radius: var(--radius-md);
+}
+.theme-modernist .detail-note { background: none; border-left: var(--rule) solid var(--color-divider); border-radius: 0; padding: 4px 0 4px 16px; }
+
+.compare-h { font-size: 14px; margin-bottom: 16px; }
+.compare-bars { display: flex; flex-direction: column; gap: 14px; }
+.crow-label { font-size: 11px; margin-bottom: 4px; opacity: 0.85; }
+.crow .bar-track + .bar-track { margin-top: 3px; background: var(--color-course-track); }
+.crow .bar-track + .bar-track .bar-fill { background: var(--color-course-bar); }
+
+.legend { display: flex; gap: 12px; font-size: 11px; margin-top: 14px; opacity: 0.7; }
+.legend-item { display: flex; align-items: center; gap: 5px; }
+.swatch { width: 8px; height: 8px; display: inline-block; border-radius: var(--radius-sm); }
+.swatch-you { background: var(--color-accent); }
+.swatch-course { background: var(--color-course-bar); }
+
+/* =============================== FOOTER ================================= */
+
+.foot { padding: var(--space-8) var(--pad-x) 48px; font-size: 12px; opacity: 0.6; }
+.foot code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px; padding: 1px 5px; border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+.error {
+  margin-top: 16px; padding: 14px 16px; font-size: 13px; opacity: 1;
+  background: var(--color-accent-100); color: var(--color-accent-800);
+  border-radius: var(--radius-md); border: 1px solid var(--color-accent-300);
+}
+
+/* ============================= RESPONSIVE =============================== */
+
+@media (max-width: 1080px) {
+  .theme-modernist .dims { grid-template-columns: repeat(3, 1fr); gap: var(--space-6) 0; }
+  .theme-modernist .dim:nth-child(3n) { border-right: 0; padding-right: 0; }
+  .theme-modernist .dim:nth-child(3n+1) { padding-left: 0; }
+  .detail-grid, .theme-nocturne .detail-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+
+@media (max-width: 860px) {
+  .hero, .theme-nocturne .hero { grid-template-columns: 1fr; }
+  .theme-modernist .hero-main { border-right: 0; border-bottom: var(--rule) solid var(--color-divider); }
+  .theme-nocturne .hero-main { padding: 0 0 var(--pad-section-y); }
+  .results-grid, .theme-nocturne .results-grid { grid-template-columns: 1fr; }
+  .theme-modernist .profile-col { border-right: 0; border-bottom: var(--rule) solid var(--color-divider); }
+  .theme-nocturne .dim { width: 100%; }
+}
+
+@media (max-width: 620px) {
+  :root, .theme-modernist { --pad-x: 20px; }
+  .theme-nocturne { --pad-x: 18px; }
+  .topbar { gap: var(--space-4); flex-wrap: wrap; }
+  .topnav { display: none; }
+  .theme-modernist .dims { grid-template-columns: repeat(2, 1fr); }
+  .theme-modernist .dim { border-right: 0; padding-left: 0; }
+  .quiz-nav { flex-direction: column-reverse; align-items: stretch; }
+  .hint { text-align: left; }
+  .cta-band { padding: 32px var(--pad-x); }
+  .match { gap: 12px; }
+  .match-rank { font-size: 20px; width: 24px; }
+  .theme-switch { margin-left: auto; }
+  .theme-switch .seg-opt { padding: 5px 10px; font-size: 11px; }
+}
