@@ -43,7 +43,7 @@ const state = {
   courses: [],
   maxTraits: null, // best possible score per trait, derived from questions.json
   index: 0,        // which question we're on
-  answers: [],     // answers[i] = the chosen option object for questions[i]
+  answers: [],     // answers[i] = the chosen option object, or null if skipped
   profile: null,   // last computed profile
   ranked: []       // last computed shortlist
 };
@@ -87,11 +87,20 @@ function maxAttainable(questions) {
    only 9 to score Enterprising, raw totals make everyone look Realistic. Cosine
    is scale-invariant overall but NOT per-axis, so that imbalance would quietly
    bias every result. Normalising means you can add or remove questions freely
-   without having to keep the six traits evenly represented. */
+   without having to keep the six traits evenly represented.
+
+   Skipped questions are stored as null and contribute nothing — no weights, no
+   subjects. Note that `max` stays the GLOBAL maximum either way: it is NOT
+   recomputed from the questions this particular student answered. Skipping
+   deflates every trait by roughly the same factor, which cosine ignores because
+   it only reads the shape of the vector. A per-respondent denominator would
+   instead re-inflate whichever traits happened to be answerable, changing that
+   shape — the exact bias the normalisation exists to prevent. */
 function buildProfile(answers, max) {
   const raw = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
   const subjects = {};
   for (const opt of answers) {
+    if (!opt) continue; // skipped
     for (const [trait, w] of Object.entries(opt.weights || {})) raw[trait] += w;
     for (const s of opt.subjects || []) subjects[s] = (subjects[s] || 0) + 1;
   }
@@ -133,6 +142,13 @@ function toPercent(score) {
 
 /* Student trait scores are 0–10 internally; the UI shows them on 0–100. */
 const pct100 = v => Math.round(v * 10);
+
+/* How many questions must actually be answered (skips don't count) before a
+   shortlist is worth showing. Cosine reads the SHAPE of a profile, and a
+   profile built from two or three answers has no settled shape — it would still
+   produce confident-looking percentages, which is worse than showing nothing.
+   Below this the results screen shows a nudge back to the quiz instead. */
+const MIN_ANSWERED = 8;
 
 /* ==========================================================================
    EXPLANATIONS — a lookup, not generated text.
@@ -322,8 +338,21 @@ function renderQuestion() {
     btn.addEventListener('click', () => choose(opt));
     box.appendChild(btn);
   });
+
+  // The escape hatch. Forced choice makes a student who recognises none of the
+  // four options invent one anyway, which injects a weight they never meant.
+  // Deliberately styled down: it is a valid answer, not a competing one.
+  const skip = document.createElement('button');
+  skip.type = 'button';
+  skip.className = 'skip';
+  skip.innerHTML =
+    `<span class="skip-key" aria-hidden="true">0</span><span>None of these fit / skip</span>`;
+  skip.addEventListener('click', skipQuestion);
+  box.appendChild(skip);
 }
 
+/* Record the response to the current question and advance. `option` is the
+   chosen option object, or null for a skip. */
 function choose(option) {
   state.answers[state.index] = option;
   if (state.index < state.questions.length - 1) {
@@ -334,6 +363,13 @@ function choose(option) {
   }
 }
 
+/* A skip is stored as null rather than left as a hole, so the answers array
+   stays aligned with the questions and Back still walks it correctly.
+   buildProfile ignores nulls, so this contributes exactly zero. */
+function skipQuestion() {
+  choose(null);
+}
+
 function startQuiz() {
   state.index = 0;
   state.answers = [];
@@ -341,11 +377,14 @@ function startQuiz() {
   showScreen('quiz');
 }
 
-/* Number keys 1–4 pick an option while the quiz screen is up. */
+/* Number keys 1–4 pick an option while the quiz screen is up; 0 skips.
+   0 is checked first, but the two can't collide anyway — parseInt('0') is 0,
+   which never satisfies the n >= 1 test below. */
 document.addEventListener('keydown', e => {
   if ($('screen-quiz').hidden) return;
   const q = state.questions[state.index];
   if (!q) return;
+  if (e.key === '0') { skipQuestion(); return; }
   const n = parseInt(e.key, 10);
   if (n >= 1 && n <= q.options.length) choose(q.options[n - 1]);
 });
@@ -353,6 +392,20 @@ document.addEventListener('keydown', e => {
 /* --- results ----------------------------------------------------------- */
 
 function showResults() {
+  // Not enough answered to have a shape worth ranking — see MIN_ANSWERED. Bail
+  // out before scoring anything: showing a shortlist here would be misleading,
+  // and so would the profile bars behind it.
+  const answered = state.answers.filter(Boolean).length;
+  if (answered < MIN_ANSWERED) {
+    $('thin-count').textContent = `${answered} of ${state.questions.length}`;
+    $('results-grid').hidden = true;
+    $('results-thin').hidden = false;
+    showScreen('results');
+    return;
+  }
+  $('results-thin').hidden = true;
+  $('results-grid').hidden = false;
+
   state.profile = buildProfile(state.answers, state.maxTraits);
   state.ranked = rankCourses(state.profile, state.courses).slice(0, 4); // top 4 = shortlist
 
@@ -487,6 +540,16 @@ async function init() {
   document.querySelectorAll('.js-start').forEach(b => b.addEventListener('click', startQuiz));
   document.querySelectorAll('.js-restart').forEach(b => b.addEventListener('click', () => showScreen('landing')));
   document.querySelectorAll('.js-back-to-matches').forEach(b => b.addEventListener('click', () => showScreen('results')));
+
+  // From the "answer a few more" notice. Resume rather than restart, and land on
+  // the first question they skipped — that's what is left to fill in.
+  document.querySelectorAll('.js-resume-quiz').forEach(b => b.addEventListener('click', () => {
+    const firstSkipped = state.answers.findIndex(a => !a);
+    state.index = firstSkipped === -1 ? state.questions.length - 1 : firstSkipped;
+    renderQuestion();
+    showScreen('quiz');
+  }));
+
   $('btn-back').addEventListener('click', () => {
     if (state.index === 0) return;
     state.index--;

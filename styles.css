@@ -339,6 +339,33 @@ a:hover { color: var(--color-accent-2); }
 }
 .theme-nocturne .option-key { background: var(--color-accent-800); color: var(--color-accent-100); font-weight: 600; }
 
+/* The "none of these fit" escape hatch. It has to be reachable without ever
+   competing with the four real options, so it inverts whatever each theme uses
+   to make an option look substantial: no fill in Nocturne (where options are
+   filled), a 1px dashed rule in Modernist (where options carry a hard 2px solid
+   one). Smaller type and reduced opacity do the rest; both settle to ~4.9:1 and
+   ~6.6:1 against their backgrounds, so it stays legible in either theme. */
+.skip {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; text-align: left; cursor: pointer;
+  font: inherit; font-size: 13px; color: var(--color-text); opacity: 0.65;
+  margin-top: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: transparent;
+  border: 1px dashed var(--color-divider); border-radius: var(--radius-md);
+  transition: opacity .12s, border-color .12s, color .12s;
+}
+.skip:hover { opacity: 1; color: var(--color-accent); border-color: var(--color-accent); }
+.skip:focus-visible { opacity: 1; }
+
+.skip-key {
+  flex: none; width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 11px;
+  color: inherit; background: transparent;
+  border: 1px solid currentColor; border-radius: var(--radius-sm);
+}
+
 .quiz-nav { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: 40px; }
 .hint { font-size: 13px; opacity: 0.6; text-align: right; }
 
@@ -348,6 +375,20 @@ a:hover { color: var(--color-accent-2); }
    stopping under the shorter column and looking like a rendering artefact. */
 .results-grid { display: grid; grid-template-columns: 340px 1fr; min-height: 72vh; }
 .theme-nocturne .results-grid { grid-template-columns: 300px 1fr; padding: var(--pad-section-y) var(--pad-x); gap: var(--pad-section-y); }
+/* Must stay below the rule above: same specificity, so source order decides
+   whether `hidden` actually beats `display: grid`. */
+.results-grid[hidden] { display: none; }
+
+/* Stands in for the whole grid when there aren't enough answers to rank on.
+   Sized like the quiz body it sends you back to, rather than like results. */
+.thin-notice { max-width: 620px; margin: 0 auto; padding: 72px var(--pad-x); }
+.theme-nocturne .thin-notice { margin: 0; padding: 64px var(--pad-x); }
+.thin-notice h2 { margin-bottom: var(--space-4); }
+/* No max-width here: the 620px container already lands the measure at ~62ch,
+   and constraining it further leaves the copy visibly narrower than the
+   heading above it. */
+.thin-notice p { font-size: 14px; opacity: 0.75; margin-bottom: var(--space-6); }
+.theme-nocturne .thin-notice p { font-size: 13px; opacity: 0.7; }
 
 .profile-col { padding: var(--pad-section-y) var(--space-8); }
 .theme-modernist .profile-col { border-right: var(--rule) solid var(--color-divider); }

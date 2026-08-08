@@ -85,7 +85,7 @@
     <div id="q-options" class="options" role="group" aria-labelledby="q-prompt"></div>
     <div class="quiz-nav">
       <button id="btn-back" class="btn btn-secondary" type="button">Back</button>
-      <p class="hint">Press 1–4 to answer with the keyboard.</p>
+      <p class="hint">Press 1–4 to answer, or 0 to skip.</p>
     </div>
   </div>
 </section>
@@ -97,7 +97,20 @@
     <button class="btn btn-secondary js-restart" type="button" style="margin-left:auto;">Retake quiz</button>
   </div>
 
-  <div class="results-grid">
+  <!-- Shown instead of the grid below when too few questions were actually
+       answered to rank anything (see MIN_ANSWERED in app.js). -->
+  <div id="results-thin" class="thin-notice" hidden>
+    <div class="eyebrow">Not enough to go on yet</div>
+    <h2>Answer a few more questions for a reliable match.</h2>
+    <p>
+      You answered <strong id="thin-count"></strong>. Matching compares the shape of
+      your interests against each course, and there isn't enough here yet to give
+      you a shortlist worth trusting. Nothing you've answered is lost.
+    </p>
+    <button class="btn btn-primary js-resume-quiz" type="button">Back to the quiz</button>
+  </div>
+
+  <div class="results-grid" id="results-grid">
     <aside class="profile-col">
       <h3>Your RIASEC profile</h3>
       <p class="section-sub">Higher bars mean stronger interest.</p>
